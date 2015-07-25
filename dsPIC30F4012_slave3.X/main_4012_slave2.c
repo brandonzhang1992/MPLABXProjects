@@ -64,7 +64,7 @@
 #define PID_N   10
 
 //ADC
-#define INDEXSIZE 250
+#define INDEXSIZE 25
 
 // Define PWM constants
 #define PWM_FREQUENCY       16000
