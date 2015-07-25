@@ -366,7 +366,7 @@ void CalcPid(pid_t *mypid, float degPOT, float degMTR)
         pwmOUT[1] = 0;
         motordirect = 1;
     }
-    return pwmOUT;
+    return;
 }
 
 void UpdatePid(pid_t *mypid)
@@ -430,7 +430,7 @@ int main() {
                 // run at 50% duty cycle until current value is high
                 // high current value = end of reach
                 pwmOUT[0] = 0;
-                pwmOUT[1] = 114; // run CCW at 25% duty cycle
+                pwmOUT[1] = PWM_COUNTS_PERIOD/2; // run CCW at 25% duty cycle
 //                if (ADCValue0 >= 70){
 //                    pwmOUT[0] = 0;
 //                    pwmOUT[1] = 0;
@@ -452,7 +452,7 @@ int main() {
                 C1TX0B4 = PIC_ID;
                 C1TX0B1 = POSCNT;
                 C1TX0B2 = ADCValue0;
-                C1TX0B3 = C1RX0B3;
+                C1TX0B3 = motordirect;
                 C1TX0CONbits.TXREQ = 1;
                 while (C1TX0CONbits.TXREQ != 0);
                 break;
@@ -525,44 +525,44 @@ int main() {
 void __attribute__((interrupt, no_auto_psv)) _ADCInterrupt(void) {
     unsigned int k = 0;
     IFS0bits.ADIF = 0;
-    ADCValue0 = ADCBUF0;
+//    ADCValue0 = ADCBUF0;
 
-//    if (adcbufferindex >= INDEXSIZE) {
-//        adcbufferindex = 0;
-//        fullflag = 1;
-//    }
-//    if (adcbufferindex == (INDEXSIZE - 1)){
-//        k = 0;
-//    }
-////    ADCValue0 = ADCBUF0;
-//    //can set requirements to detect PWM before reading ADC
-//    if (ADCBUF0 < 200){
-//        ADCvaluebuffer[adcbufferindex] = ADCBUF0;
-//        if (fullflag == 0) {
-////            ADCvaluebuffer[adcbufferindex] = ADCBUF0;
+    if (adcbufferindex >= INDEXSIZE) {
+        adcbufferindex = 0;
+        fullflag = 1;
+    }
+    if (adcbufferindex == (INDEXSIZE - 1)){
+        k = 0;
+    }
+//    ADCValue0 = ADCBUF0;
+    //can set requirements to detect PWM before reading ADC
+    if (ADCBUF0 < 200){
+        ADCvaluebuffer[adcbufferindex] = ADCBUF0;
+        if (fullflag == 0) {
+//            ADCvaluebuffer[adcbufferindex] = ADCBUF0;
+            ADCsum = ADCsum + ADCvaluebuffer[adcbufferindex];
+            ADCValue0 = ADCsum / (adcbufferindex+1);
+        }
+        if(fullflag == 1){
+            ADCsum = 0;
+            for (k = 0; k < INDEXSIZE; k++) {
+                ADCsum = ADCsum + ADCvaluebuffer[k];
+//                ADCValue0 = ADCsum*0.1;
+//                return ADCsum;
+            }
+            ADCValue0 = ADCsum/INDEXSIZE;
+//        }
+        //method 2 subtract the oldest value then add the newest (no need to sum each time)
+//        if (fullflag == 1) {
+//            ADCsum = ADCsum - ADCvaluebuffer[k];
+//            ADCvaluebuffer[adcbufferindex] = ADCBUF0;
 //            ADCsum = ADCsum + ADCvaluebuffer[adcbufferindex];
-//            ADCValue0 = ADCsum / (adcbufferindex+1);
-//        }
-//        if(fullflag == 1){
-//            ADCsum = 0;
-//            for (k = 0; k < INDEXSIZE; k++) {
-//                ADCsum = ADCsum + ADCvaluebuffer[k];
-////                ADCValue0 = ADCsum*0.1;
-////                return ADCsum;
-//            }
-//            ADCValue0 = ADCsum/INDEXSIZE;
-////        }
-//        //method 2 subtract the oldest value then add the newest (no need to sum each time)
-////        if (fullflag == 1) {
-////            ADCsum = ADCsum - ADCvaluebuffer[k];
-////            ADCvaluebuffer[adcbufferindex] = ADCBUF0;
-////            ADCsum = ADCsum + ADCvaluebuffer[adcbufferindex];
-////            ADCValue0 = ADCsum / INDEXSIZE;
-////            k++;
-//        }
-//    }
-//
-//        adcbufferindex += 1;
+//            ADCValue0 = ADCsum / INDEXSIZE;
+//            k++;
+        }
+    }
+
+        adcbufferindex += 1;
 }
 
 void __attribute__((interrupt, no_auto_psv)) _INT0Interrupt(void) {

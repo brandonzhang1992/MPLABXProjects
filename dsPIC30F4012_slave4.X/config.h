@@ -6,9 +6,9 @@
 #include <xc.h>
 
 // FOSC
-#pragma config FPR = FRC_PLL8           // Primary Oscillator Mode (FRC w/ PLL 8x)
-#pragma config FOS = FRC                // Oscillator Source (Internal Fast RC)
-#pragma config FCKSMEN = CSW_FSCM_ON    // Clock Switching and Monitor (Sw Enabled, Mon Enabled)
+#pragma config FPR = HS                 // Primary Oscillator Mode (HS)
+#pragma config FOS = PRI                // Oscillator Source (Primary Oscillator)
+#pragma config FCKSMEN = CSW_FSCM_OFF   // Clock Switching and Monitor (Sw Disabled, Mon Disabled)
 
 // FWDT
 #pragma config FWPSB = WDTPSB_16        // WDT Prescaler B (1:16)

@@ -19,7 +19,7 @@ endif
 endif
 
 # Environment
-MKDIR=gnumkdir -p
+MKDIR=mkdir -p
 RM=rm -f 
 MV=mv 
 CP=cp 
@@ -45,17 +45,17 @@ OBJECTDIR=build/${CND_CONF}/${IMAGE_TYPE}
 DISTDIR=dist/${CND_CONF}/${IMAGE_TYPE}
 
 # Source Files Quoted if spaced
-SOURCEFILES_QUOTED_IF_SPACED=main_4012_slave2.c
+SOURCEFILES_QUOTED_IF_SPACED=main_4012_slave4.c
 
 # Object Files Quoted if spaced
-OBJECTFILES_QUOTED_IF_SPACED=${OBJECTDIR}/main_4012_slave2.o
-POSSIBLE_DEPFILES=${OBJECTDIR}/main_4012_slave2.o.d
+OBJECTFILES_QUOTED_IF_SPACED=${OBJECTDIR}/main_4012_slave4.o
+POSSIBLE_DEPFILES=${OBJECTDIR}/main_4012_slave4.o.d
 
 # Object Files
-OBJECTFILES=${OBJECTDIR}/main_4012_slave2.o
+OBJECTFILES=${OBJECTDIR}/main_4012_slave4.o
 
 # Source Files
-SOURCEFILES=main_4012_slave2.c
+SOURCEFILES=main_4012_slave4.c
 
 
 CFLAGS=
@@ -77,25 +77,25 @@ ifneq ($(INFORMATION_MESSAGE), )
 endif
 	${MAKE}  -f nbproject/Makefile-default.mk dist/${CND_CONF}/${IMAGE_TYPE}/dsPIC30F4012_slave4.X.${IMAGE_TYPE}.${OUTPUT_SUFFIX}
 
-MP_PROCESSOR_OPTION=30F4011
-MP_LINKER_FILE_OPTION=,--script=p30F4011.gld
+MP_PROCESSOR_OPTION=30F4012
+MP_LINKER_FILE_OPTION=,--script=p30F4012.gld
 # ------------------------------------------------------------------------------------
 # Rules for buildStep: compile
 ifeq ($(TYPE_IMAGE), DEBUG_RUN)
-${OBJECTDIR}/main_4012_slave2.o: main_4012_slave2.c  nbproject/Makefile-${CND_CONF}.mk
+${OBJECTDIR}/main_4012_slave4.o: main_4012_slave4.c  nbproject/Makefile-${CND_CONF}.mk
 	@${MKDIR} "${OBJECTDIR}" 
-	@${RM} ${OBJECTDIR}/main_4012_slave2.o.d 
-	@${RM} ${OBJECTDIR}/main_4012_slave2.o 
-	${MP_CC} $(MP_EXTRA_CC_PRE)  main_4012_slave2.c  -o ${OBJECTDIR}/main_4012_slave2.o  -c -mcpu=$(MP_PROCESSOR_OPTION)  -MMD -MF "${OBJECTDIR}/main_4012_slave2.o.d"      -g -D__DEBUG -D__MPLAB_DEBUGGER_PK3=1    -omf=elf -O0 -msmart-io=1 -Wall -msfr-warn=off
-	@${FIXDEPS} "${OBJECTDIR}/main_4012_slave2.o.d" $(SILENT)  -rsi ${MP_CC_DIR}../ 
+	@${RM} ${OBJECTDIR}/main_4012_slave4.o.d 
+	@${RM} ${OBJECTDIR}/main_4012_slave4.o 
+	${MP_CC} $(MP_EXTRA_CC_PRE)  main_4012_slave4.c  -o ${OBJECTDIR}/main_4012_slave4.o  -c -mcpu=$(MP_PROCESSOR_OPTION)  -MMD -MF "${OBJECTDIR}/main_4012_slave4.o.d"      -g -D__DEBUG -D__MPLAB_DEBUGGER_PK3=1    -omf=elf -O0 -msmart-io=1 -Wall -msfr-warn=off
+	@${FIXDEPS} "${OBJECTDIR}/main_4012_slave4.o.d" $(SILENT)  -rsi ${MP_CC_DIR}../ 
 	
 else
-${OBJECTDIR}/main_4012_slave2.o: main_4012_slave2.c  nbproject/Makefile-${CND_CONF}.mk
+${OBJECTDIR}/main_4012_slave4.o: main_4012_slave4.c  nbproject/Makefile-${CND_CONF}.mk
 	@${MKDIR} "${OBJECTDIR}" 
-	@${RM} ${OBJECTDIR}/main_4012_slave2.o.d 
-	@${RM} ${OBJECTDIR}/main_4012_slave2.o 
-	${MP_CC} $(MP_EXTRA_CC_PRE)  main_4012_slave2.c  -o ${OBJECTDIR}/main_4012_slave2.o  -c -mcpu=$(MP_PROCESSOR_OPTION)  -MMD -MF "${OBJECTDIR}/main_4012_slave2.o.d"        -g -omf=elf -O0 -msmart-io=1 -Wall -msfr-warn=off
-	@${FIXDEPS} "${OBJECTDIR}/main_4012_slave2.o.d" $(SILENT)  -rsi ${MP_CC_DIR}../ 
+	@${RM} ${OBJECTDIR}/main_4012_slave4.o.d 
+	@${RM} ${OBJECTDIR}/main_4012_slave4.o 
+	${MP_CC} $(MP_EXTRA_CC_PRE)  main_4012_slave4.c  -o ${OBJECTDIR}/main_4012_slave4.o  -c -mcpu=$(MP_PROCESSOR_OPTION)  -MMD -MF "${OBJECTDIR}/main_4012_slave4.o.d"        -g -omf=elf -O0 -msmart-io=1 -Wall -msfr-warn=off
+	@${FIXDEPS} "${OBJECTDIR}/main_4012_slave4.o.d" $(SILENT)  -rsi ${MP_CC_DIR}../ 
 	
 endif
 
@@ -122,7 +122,7 @@ else
 dist/${CND_CONF}/${IMAGE_TYPE}/dsPIC30F4012_slave4.X.${IMAGE_TYPE}.${OUTPUT_SUFFIX}: ${OBJECTFILES}  nbproject/Makefile-${CND_CONF}.mk   
 	@${MKDIR} dist/${CND_CONF}/${IMAGE_TYPE} 
 	${MP_CC} $(MP_EXTRA_LD_PRE)  -o dist/${CND_CONF}/${IMAGE_TYPE}/dsPIC30F4012_slave4.X.${IMAGE_TYPE}.${DEBUGGABLE_SUFFIX}  ${OBJECTFILES_QUOTED_IF_SPACED}      -mcpu=$(MP_PROCESSOR_OPTION)        -omf=elf -Wl,,--defsym=__MPLAB_BUILD=1,$(MP_LINKER_FILE_OPTION),--stack=16,--check-sections,--data-init,--pack-data,--handles,--isr,--no-gc-sections,--fill-upper=0,--stackguard=16,--no-force-link,--smart-io,-Map="${DISTDIR}/${PROJECTNAME}.${IMAGE_TYPE}.map",--report-mem$(MP_EXTRA_LD_POST) 
-	${MP_CC_DIR}\\xc16-bin2hex dist/${CND_CONF}/${IMAGE_TYPE}/dsPIC30F4012_slave4.X.${IMAGE_TYPE}.${DEBUGGABLE_SUFFIX} -a  -omf=elf  
+	${MP_CC_DIR}/xc16-bin2hex dist/${CND_CONF}/${IMAGE_TYPE}/dsPIC30F4012_slave4.X.${IMAGE_TYPE}.${DEBUGGABLE_SUFFIX} -a  -omf=elf  
 	
 endif
 
@@ -142,7 +142,7 @@ endif
 # Enable dependency checking
 .dep.inc: .depcheck-impl
 
-DEPFILES=$(shell mplabwildcard ${POSSIBLE_DEPFILES})
+DEPFILES=$(shell "${PATH_TO_IDE_BIN}"mplabwildcard ${POSSIBLE_DEPFILES})
 ifneq (${DEPFILES},)
 include ${DEPFILES}
 endif

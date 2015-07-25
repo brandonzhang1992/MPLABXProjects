@@ -10,12 +10,13 @@
 #include "config.h"
 #include "p30fXXXX.h"
 
-#define PIC_ID          2
-#define SEND_DATA       (PIC_ID-1)
+#define PIC_ID          1
+#define SEND_DATA       6//(PIC_ID-1)
 #define UPDATE_POSITION (PIC_ID-3)
 #define PIC_HAPTIC      (PIC_ID+3)
 #define SLAVE_INDATA    0//(PIC_ID-4)
 #define MASTER_INDATA   (PIC_ID-1)
+#define HAPTIC_RANGE    90
 
 // IO definitions
 #define LEDRED  LATEbits.LATE3 // RED
@@ -345,14 +346,18 @@ unsigned int * CalcPid(pid_t *mypid, float degPOT, float degMTR)
     pidOutDutyCycle = (float) ((mypid->u/degPOT)*2*PWM_COUNTS_PERIOD);
 
 
+    // clockwise saturation point
     if (pidOutDutyCycle >= 2*PWM_COUNTS_PERIOD){
         pwmOUT[0] = (unsigned int) (2*PWM_COUNTS_PERIOD);
         pwmOUT[1] = 0;
     }
+
+    // ccw saturation point
     else if (pidOutDutyCycle <= -(2*PWM_COUNTS_PERIOD)){
         pwmOUT[0] = 0;
         pwmOUT[1] = (unsigned int) (2*PWM_COUNTS_PERIOD);
     }
+
     else if (pidOutDutyCycle <0){
         pwmOUT[0] = 0;
         pwmOUT[1] = (unsigned int)((-1)*2*pidOutDutyCycle);
@@ -361,7 +366,7 @@ unsigned int * CalcPid(pid_t *mypid, float degPOT, float degMTR)
         pwmOUT[0] = (unsigned int)(2*pidOutDutyCycle);
         pwmOUT[1] = 0;
     }
-    return pwmOUT;
+    return;
 }
 
 void UpdatePid(pid_t *mypid)
@@ -424,7 +429,7 @@ int main() {
 
                 C1TX0B4 = PIC_ID;
                 C1TX0B1 = POSCNT;
-                C1TX0B2 = C1RX0B2;
+                C1TX0B2 = (unsigned int) ((InData0[1] * 2*PWM_COUNTS_PERIOD) / HAPTIC_RANGE);;
                 C1TX0B3 = C1RX0B3;
                 C1TX0CONbits.TXREQ = 1;
                 while (C1TX0CONbits.TXREQ != 0);
@@ -444,15 +449,15 @@ int main() {
                 LEDRED = 0;
                 LEDYLW = 0;
                 LEDGRN = 0;
-                if (InData0[1] > 0) {
-                    if (InData0[2] == 1) {
-                        PDC2 = (unsigned int) (InData0[1]* 2 * .5914);
-                        PDC1 = 0;
-                    } else {
-                        PDC1 = (unsigned int) (InData0[1]* 2 * .5914);
-                        PDC2 = 0;
-                    }
-                }
+//                if (InData0[1] > 0) {
+//                    if (InData0[2] == 1) {
+//                        PDC2 = (unsigned int) ((InData0[1] * 2*PWM_COUNTS_PERIOD) / HAPTIC_RANGE);
+//                        PDC1 = 0;
+//                    } else {
+//                        PDC1 = (unsigned int) ((InData0[1] * 2*PWM_COUNTS_PERIOD)/HAPTIC_RANGE);
+//                        PDC2 = 0;
+//                    }
+//                }
                 break;
         } // motorState switch
 
